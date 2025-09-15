@@ -1,0 +1,21 @@
+{
+  "name": "vscode-electron-test",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node ./test/runTest.js"
+  },
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@vscode/test-electron": "^2.3.9",
+    "chai": "^5.1.1",
+    "electron-rebuild": "^3.2.9",
+    "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "@hurdlegroup/robotjs": "^0.12.3"
+  }
+}

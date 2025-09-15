@@ -1,0 +1,54 @@
+version: "0.1"
+globalTimeout: 90
+testSuiteTimeout: 90
+testSuiteStep: 90
+
+autosplit: true
+retryOnFailure: false
+
+
+parallelism: 2
+# winParallelism: 2 
+# macParallelism: 3
+
+shell: bash
+runtime:
+  language: node
+  version: "22"
+runson: ${matrix.os}
+
+matrix:
+  os: [win, mac]
+
+pre:
+  - |
+    if [ "$os" = "win" ]; then 
+      choco install vscode -y
+    else
+      brew install --cask visual-studio-code
+    fi
+  - npx playwright install
+  - npm install
+
+cacheKey: '{{ checksum "package-lock.json" }}'
+cacheDirectories:
+  - node_modules
+
+
+testDiscovery:
+  type: raw
+  mode: dynamic
+  command: grep -R "test('" tests | sed -E "s/.*test\\('([^']*)'.*/\\1/"
+
+testRunnerCommand: npx playwright test tests/vscode-extension-actions.test.js --grep "$test"
+
+captureScreenRecordingForScenarios: true
+alwaysRunPostSteps: true
+scenarioCommandStatusOnly: true
+
+
+report: true
+partialReports:
+  frameworkName: playwright
+  location: playwright-report
+  type: html
